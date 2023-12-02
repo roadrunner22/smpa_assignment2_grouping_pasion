@@ -61,11 +61,11 @@ Take a moment to look at the various categories included for each disbursement.
 
 Without doing any analysis yet, what are three questions you might try to answer using this dataset? Write your narrative answers in the spaces below.
 
-1.  
+1.  Who spent the most money of the campaign and where did they spend it? This can help us understand who the most active operatives are, and we can then track where the most active strategic operative(s) are going to, then we can follow up with the people they talked to and where they went to get a better idea of the campaign strategy and which constituencies they are looking to appeal to. This can help inform both the governing strategy of Trump in his first term, and who he would look to appease if he was elected again. 
 
-2.  
+2.  Inversely, I'd be curious who spent the most money (whether that be an individual or an organization), then looking at their local or national influence in politics/their policies and then writing a story about why they are pushing for Trump to become president again and what the backing for it is. 
 
-3.  
+3.  I'm also interested in how Trump is spending the money, seems like a fair amount is to cover legal fees, and while, retroactively, we know he's spending a lot of campaign money on legal fees (especially considering his four indictments) seeing a graphic about how he's using his imbursements could be very informative
 
 ## Coding Assignment Questions
 
@@ -82,7 +82,9 @@ How much was spent in the 2017 vs. 2018 reporting year?
 ```{r}
 
 
-
+payments %>%
+  group_by(report_year) %>%
+  summarise(money_spent = sum(disbursement_amount))
 
 
 
@@ -94,7 +96,9 @@ Tally the total overall disbursement amounts for each month (distinguishing betw
 ```{r}
 
 
-
+payments %>%
+  group_by(disbursement_month) %>%
+  summarise(money_spent = sum(disbursement_amount))
 
 
 
