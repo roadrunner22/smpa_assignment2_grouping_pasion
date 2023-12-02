@@ -97,7 +97,7 @@ Tally the total overall disbursement amounts for each month (distinguishing betw
 
 
 payments %>%
-  group_by(disbursement_month) %>%
+  group_by(disbursement_month, disbursement_year) %>%
   summarise(money_spent = sum(disbursement_amount))
 
 
@@ -106,10 +106,15 @@ payments %>%
 
 Which recipient (recipient_name) was paid the most in the 2020 election cycle?
 
+#american made media consultants were paid the most during the 2020 election cycle, according to the data 
+
 ```{r}
 
 
-
+payments %>%
+  group_by(recipient_name) %>%
+  summarise(total_payments = sum(disbursement_amount)) %>%
+  arrange(-total_payments)
 
 
 
@@ -118,20 +123,30 @@ Which recipient (recipient_name) was paid the most in the 2020 election cycle?
 
 Look at what this recipient was paid for. What service or good (see the "disbursement_description") were they paid the most for?
 
+#They paid the most for placed media
+
 ```{r}
 
 
+paidfor_q <- payments %>%
+                 filter(recipient_name == 'AMERICAN MADE MEDIA CONSULTANTS, LLC') 
 
-
+paidfor_q %>%
+  group_by(disbursement_description) %>%
+   summarise(total_payments = sum(disbursement_amount))
+  
 
 
 ```
 
 What's the most common category overall (see "disbursement_description") the campaign spent money on?
 
+#Online advertising is the most common thing they spent money on 
+
 ```{r}
 
-
+paidfor_q %>%
+  count(disbursement_description)
 
 
 
@@ -140,9 +155,15 @@ What's the most common category overall (see "disbursement_description") the cam
 
 Who were the 5 biggest recipients of campaign spending on "LEGAL CONSULTING"..?
 
+# 1. Jones Day; 2. LAROCCA HORNIK ROSEN GREENBERG & BLAHA LLP; 3. KASOWITZ, BENSON, TORRESS & FRIEDMAN; 4.  THE LAW OFFICES OF ALAN S. FUTERFAS; 5. MCDERMOTT WILL & EMERY	
+
 ```{r}
 
-
+payments %>%
+  filter(disbursement_description == 'LEGAL CONSULTING') %>%
+  group_by(recipient_name) %>%
+  summarise(total_payments = sum(disbursement_amount)) %>%
+  arrange(-total_payments)
 
 
 
@@ -153,11 +174,16 @@ Who were the 5 biggest recipients of campaign spending on "LEGAL CONSULTING"..?
 
 Who are the top 5 individuals (vs. organization) were paid by the campaign committee?
 
+# 1. Michael Glassner; 2. Sean Dollman; 3. Darren Centinello; 4. Christopher Carr; 5. John Pence
+
 ```{r}
 
-
-
-
+payments %>%
+  filter(entity_type == "IND") %>%
+  group_by(recipient_name) %>%
+  summarise(total_payments = sum(disbursement_amount)) %>%
+  arrange(-total_payments)
+  
 
 
 
@@ -166,11 +192,15 @@ Who are the top 5 individuals (vs. organization) were paid by the campaign commi
 
 For the indvidual who was paid the most, which payment category (disbursement_description) was the top one for him or her? And how much money were they paid in that category?
 
+#The top individual, Michael Glassner, was paid on payroll for $499,000 in payments from the committee (so they were just paying his salary with committee funds?) 
+
 ```{r}
 
-
-
-
+payments %>%
+  filter(recipient_name == 'GLASSNER, MICHAEL') %>%
+  group_by(disbursement_description) %>%
+  summarise(total_payments = sum(disbursement_amount)) %>%
+  arrange(-total_payments)
 
 
 
